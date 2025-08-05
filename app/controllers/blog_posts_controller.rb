@@ -1,4 +1,6 @@
 class BlogPostsController < ApplicationController
+  before_action :set_blog_post, only: [:show, :edit, :update, :destroy]
+  
   def index
     @blog_posts = BlogPost.all
   end
@@ -35,10 +37,19 @@ class BlogPostsController < ApplicationController
     end
   end
 
+  def destroy
+    @blog_post = BlogPost.find(params[:id])
+    @blog_post.destroy
+    redirect_to root_path, notice: "Blog post deleted"
+  end
+
   private
 
   def blog_post_params
     params.require(:blog_post).permit(:title, :body)
   end
 
+  def set_blog_post
+    @blog_post = BlogPost.find(params[:id])
+  end
 end
